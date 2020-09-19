@@ -177,7 +177,7 @@ class TestController extends AbstractController
 	/**
      * @Route("/getTest/{id}", methods={"GET"})
      */
-    public function show(string $id)
+    public function getTest(string $id)
     {
 		
 		$manager = $this->getDoctrine()->getManager();
@@ -197,7 +197,7 @@ class TestController extends AbstractController
 		}
 		$test = $test[0];
 		
-		$result = ['IdTest' => $test->getId(), 'NameTest' => $test->getNameTest(), 'questions' => array() ];
+		$result = ['IdTest' => $test->getId(), 'DescriptionTest' => $test->getDescription(), 'NameTest' => $test->getNameTest(), 'questions' => array() ];
 		
 		$questions = $manager->getRepository(Question::class)->createQueryBuilder('q')
 		->select('q')
