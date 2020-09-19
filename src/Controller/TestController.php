@@ -215,5 +215,47 @@ class TestController extends AbstractController
 				'body' => $result
 			]);
 	}
+	
+	/**
+     * @Route("/setAnswer", name="setAnswer", methods={"POST"})
+     */
+	public function setAnswer(Request $request)
+	{   
+			
+		$constraint = new Assert\Collection([
+			'id_test' => new Assert\Type(['type' => 'digit']),
+			'id_question' => new Assert\Type(['type' => 'digit']),
+			'description' => new Assert\Length(['min' => 2])
+		]);
+		
+		$validator = Validation::createValidator();
+		$error = $validator->validate(['id_test' => $request->request->get('id_test'),
+										'id_question' => $request->request->get('id_question'), 
+										'description' => $request->request->get('description')], 
+										$constraint);
+		
+		if(0 !== count($error)){
+			return $this->json([
+				'error' => (string)$error,
+				'body' => []
+			]);
+		}
+		
+		$answer = new Answer();
+		$answer->setIdQuestion($request->request->get('id_question'));
+		$answer->setDescription($request->request->get('description'));
+		$answer->setIdTest($request->request->get('id_test'));
+		
+		$entityManager = $this->getDoctrine()->getManager();
+		$entityManager->persist($answer);
+		$entityManager->flush();
+		
+		return $this->json([
+            'error' => '',
+			'body' => ['message' => 'Answer setted', 'id' => $answer->getId()]
+        ]);
+
+	}
+	
 
 }
