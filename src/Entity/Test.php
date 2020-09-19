@@ -21,7 +21,12 @@ class Test
      * @ORM\Column(type="text")
      */
     private $NameTest;
-
+		
+	/**
+     * @ORM\Column(type="string", nullable=true, length=50)
+     */
+    private $Identifier;
+	
     /**
      * @ORM\Column(type="text")
      */
@@ -57,6 +62,18 @@ class Test
     public function setDescription(string $Description): self
     {
         $this->Description = $Description;
+
+        return $this;
+    }
+	
+	public function getIdentifier(): ?string
+    {
+        return $this->Identifier;
+    }
+
+    public function setIdentifier(string $Identifier): self
+    {
+        $this->Identifier = $Identifier;
 
         return $this;
     }
